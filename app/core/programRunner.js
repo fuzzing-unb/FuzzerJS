@@ -1,0 +1,57 @@
+const { spawnSync } = require('child_process');
+
+const Runner = require('./runner');
+
+class ProgramRunner extends Runner {
+
+    #program;
+
+    constructor(program) {
+        super();
+        this.#program = program;
+    }
+
+    runProcess(inp) {
+
+        const command = spawnSync(this.#program, { input: inp }); // run console program
+
+        return Object.freeze({
+            status: command.status,
+            stdin: inp,
+            stdout: command.stdout.toString(),
+            stderr: command.stderr.toString()
+        });
+
+        // command = {
+        //     status: 0,
+        //     signal: null,
+        //     output: [ null, <Buffer 61 62 63>, <Buffer > ],
+        //     pid: 14,
+        //     stdout: <Buffer 61 62 63>,
+        //     stderr: <Buffer >
+        // }
+    }
+
+    run(inp = "") {
+
+        var outcome = Runner.UNRESOLVED;
+        var result = this.runProcess(inp);
+        
+        if (result.status == 0) {
+            outcome = Runner.PASS;
+        } else if (result.status < 0){
+            outcome = Runner.FAIL;
+        } else {
+            outcome = Runner.UNRESOLVED;
+        }
+
+        return Object.freeze([result, outcome]); 
+    }
+
+
+
+
+
+}
+
+module.exports = ProgramRunner;
