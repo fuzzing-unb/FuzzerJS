@@ -1,0 +1,11 @@
+{
+    "name": "fuzzer-js",
+    "version": "1.0.0",
+    "description": "A fuzzer in node-js",
+    "author": "First Last <first.last@example.com>",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js"
+    }
+  }
+  
