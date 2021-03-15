@@ -1,8 +1,8 @@
 const assert = require('assert');
 
-const PrintRunner = require('../core/printRunner');
-const RandomFuzzer = require('../core/randomFuzzer');
-const ProgramRunner = require('../core/programRunner');
+const PrintRunner = require('../../core/printRunner');
+const RandomFuzzer = require('../../core/randomFuzzer');
+const ProgramRunner = require('../../core/programRunner');
 
 // p = new PrintRunner();
 // // console.log(p.run('abc'));

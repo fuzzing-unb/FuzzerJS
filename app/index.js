@@ -1,8 +1,8 @@
 // // Run Chapter Fuzzer
-// require('./chapters/ch-fuzzer');
+require('./chapters/fuzzer/ch-fuzzer');
 
 // // Run Chapter Coverage
-require('./chapters/coverage/ch-coverage');
+// require('./chapters/coverage/ch-coverage');
 
 
 
