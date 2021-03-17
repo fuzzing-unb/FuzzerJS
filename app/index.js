@@ -1,8 +1,8 @@
-// // Run Chapter Fuzzer
-require('./chapters/fuzzer/ch-fuzzer');
+// // Run samples of basic Fuzzer
+require('./samples/fuzzer/sample-fuzzer');
 
-// // Run Chapter Coverage
-// require('./chapters/coverage/ch-coverage');
+// Run samples how to Coverage a JS file
+// require('./samples/coverage/sample-coverage');
 
 
 
