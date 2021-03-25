@@ -1,14 +1,18 @@
 version: '3.4'
 
 services:
-  fuzzer-js:
-    image: fuzzer-js
+  node-fuzzerjs:
+    image: node-fuzzerjs
+    container_name: fuzzer-js
     build:
       context: .
       dockerfile: ./Dockerfile
-    environment:
-      NODE_ENV: production
+    # environment:
+    #   NODE_ENV: production
     ports:
       - 3030:3000
     volumes:
       - ./app:/usr/src/app
+    # command: tail -f /dev/null # keep open container 
+    command: node  /usr/src/app/index.js # run index file
+
