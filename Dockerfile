@@ -10,4 +10,6 @@ COPY ./app /usr/src/app
 
 EXPOSE 3000
 
-
+# set user as node
+RUN chown -R node:node /usr/src/app
+USER node
