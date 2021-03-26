@@ -4,8 +4,8 @@ const path = require('path');
 /**
  * Steps
  * 1. Instrument file
- * 2. Copy test file
- * 3. Run nyc
+ * 2. Run nyc
+ * 3. Get coverage info
  * 4. Delete temporal files
  */
 
@@ -13,100 +13,74 @@ const CoverageJS = function () {
 
     _extension = ".js"
 
-    _dirFile = ''
-    _fileName = ''
-    _file = ''
+    _dirScript = ""
+    _scriptName = ""
+    _script = ""
 
-    _dirFileInstrumented = ''
-    _fileInstrumentedName = ''
-    _fileInstrumented = ''
+    _dirScriptInstrumented = ""
+    _scriptInstrumentedName = ""
+    _scriptInstrumented = ""
 
-    _dirFileCoverage = ''
-    _fileCoverageName = ''
-    _fileCoverage = ''
+    _dirTemp = ".fuzzerjs-temporal"
+    _dirReport = "report"
+    _lcovFile = "lcov.info"
 
+    _coverageLines = []
+    _totalLines = 0
 
+    function run(pathFile, inputValue = "") {
 
-    function run(pathFile, pathTestFile, showTextReport = true) {
+        // Create temporal directory
+        createDirectory(_dirTemp)
 
         // Validations
         _validatePath(pathFile)
-        _validatePath(pathTestFile)
+
         // 1. Instrument file
-        // _runCMD(`nyc instrument ${file} > ${instrumentedfile}`)
         _instrumentFile(pathFile)
 
-        // * 2. Copy test file 
-        _copyTestFile(pathTestFile)
+        // 2. Run nyc
+        _runNYC(inputValue)
 
-        // * 3. Run nyc
-        _runNYC(showTextReport)
+        // 3. Get coverage information
+        _readInfoCoverageFile()
 
-        // * 4. Delete temporal files
+        // 4. Delete temporal files
         _deleteTemporalFiles()
+
+        return Object.freeze({
+            coverageLines: _coverageLines,
+            totalLines: _totalLines
+        });
     }
 
     function _instrumentFile(pathFile) {
 
-        [_file, _dirFile, _fileName] = _splitPath(pathFile)
+        [_script, _dirScript, _scriptName] = _splitPath(pathFile)
 
-        _fileInstrumentedName = `${_fileName}_instrumented`
+        // _scriptInstrumentedName = `${_scriptName}_instrumented`
 
-        _dirFileInstrumented = _dirFile
+        // _dirScriptInstrumented = _dirTemp
 
-        _fileInstrumented = path.join(_dirFileInstrumented, `${_fileInstrumentedName}${_extension}`)
+        // _scriptInstrumented = path.join(_dirScriptInstrumented, `${_scriptInstrumentedName}${_extension}`)
 
-        _runCMD(`nyc instrument ${_file} > ${_fileInstrumented}`)
+        // _runCMD(`nyc instrument ${_script} > ${_scriptInstrumented}`)
 
     }
 
-    function _copyTestFile(pathTestFile) {
-
-        [_fileCoverage, _dirFileCoverage, _fileCoverageName] = _splitPath(pathTestFile)
-
-        _fileCoverageName = `${_fileCoverageName}_coverage`
-
-        // _dirFileCoverage = xyz
-
-        _fileCoverage = path.join(_dirFileCoverage, `${_fileCoverageName}${_extension}`)
-
-        // Create coverage file
-        const data = fs.readFileSync(pathTestFile, { encoding: 'utf8' })
-        // fs.writeFileSync(_fileCoverage,
-        //     data.replace(
-        //         path.join(_dirFile, _fileName),
-        //         path.join(_dirFileInstrumented, _fileInstrumentedName)
-        //     )
-        // );
-        fs.writeFileSync(_fileCoverage,
-            data.replace(
-                `/${_fileName}`,
-                `/${_fileInstrumentedName}`,
-            )
-        );
-    }
-
-    function _runNYC(showTextReport) {
+    function _runNYC(inputValue) {
 
         commandNYC = "nyc "
-
-        showTextReport ? commandNYC += "--reporter=text " : null
-
+        // commandNYC += "--reporter=text "
         commandNYC += "--reporter=lcov "
-        commandNYC += `--report-dir=${path.join('reports', _fileName)} `
-        commandNYC += `--exclude=${_fileCoverage} `
-        commandNYC += `node ${_fileCoverage}`
+        commandNYC += `--report-dir=${path.join(_dirTemp, _dirReport)} `
+        commandNYC += `node ${_script} "${inputValue}"`
 
-        const reportText = _runCMD(commandNYC)
-
-        reportText ? console.log(reportText) : null
-
-        //Delete temporal file .nyc_output create by nyc 
-        _deleteLinux(".nyc_output")
-        _deleteLinux("node_modules")
+        _runCMD(commandNYC)
+        // const reportText = _runCMD(commandNYC)
+        //reportText ? console.log(reportText) : null
 
     }
-
 
     function _splitPath(pathFile) {
 
@@ -118,6 +92,11 @@ const CoverageJS = function () {
     }
 
     function _validatePath(pathFile) {
+
+        if (!pathFile) {
+            throw "path is empty"
+        }
+
         try {
             if (!fs.existsSync(pathFile)) {
                 throw `${pathFile} does not exist.`
@@ -132,6 +111,44 @@ const CoverageJS = function () {
 
     }
 
+    function _readInfoCoverageFile() {
+
+        flagSF = 0
+
+        try {
+            content = fs.readFileSync(path.join(_dirTemp, _dirReport, _lcovFile), { encoding: 'utf8' });
+        } catch (err) {
+            // An error occurred
+            throw err;
+        }
+
+        _totalLines = 0
+        lines = content.split('\n')
+
+        for (let index = 0; index < lines.length; index++) {
+
+            line = lines[index];
+
+            if (line.startsWith("SF:") && line.includes(_scriptName)) {
+                flagSF = 1;
+            }
+
+            if (flagSF) {
+                if (line.startsWith("DA:")) {
+
+                    line = line.substring(3, line.lenght)
+
+                    line = line.split(",")
+
+                    if (line[1] > 0) {
+                        _coverageLines.push(line[0])
+                    }
+
+                    _totalLines += 1
+                }
+            }
+        }
+    }
 
     function _runCMD(cmd) {
         try {
@@ -142,7 +159,7 @@ const CoverageJS = function () {
                 // stdio: 'inherit'
             })
 
-            return execSyncResult
+            // return execSyncResult
 
         } catch (error) {
             // error.status;  // 0 : successful exit, but here in exception it has to be greater than 0
@@ -153,25 +170,20 @@ const CoverageJS = function () {
     }
 
     function _deleteTemporalFiles() {
-        _deleteFile(_fileInstrumented)
-        _deleteFile(_fileCoverage)
+        _deleteDirectory(_dirTemp)
+        //Delete temporal file .nyc_output create by nyc 
+        _deleteDirectory(".nyc_output")
+        _deleteDirectory("node_modules")
     }
 
-    function _deleteFile(filename) {
-        try {
-            fs.unlinkSync(filename)
-            //file removed
-        } catch (err) {
-            console.error(err)
+    function createDirectory(dirName) {
+        if (!fs.existsSync(dirName)) {
+            fs.mkdirSync(dirName);
         }
-
     }
 
-    function _deleteLinux(pathFile) {
-
-        if (fs.existsSync(pathFile)) {
-            execSync(`rm -r ${pathFile}`)
-        }
+    function _deleteDirectory(dirName) {
+        fs.rmdirSync(dirName, { recursive: true })
     }
 
     return {
