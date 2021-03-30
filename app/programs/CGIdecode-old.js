@@ -40,15 +40,4 @@ const CGIdecode = (input) => {
     return output
 };
 
-// exports.CGIdecode = CGIdecode;
-
-inputs = []
-inputs = process.argv.slice(2)
-
-// console.log(CGIdecode(inputs.toString())) 
-if (inputs.length == 1) {
-    console.log(CGIdecode(inputs[0]))
-} else {
-    throw "the number of parameters is incorrect"
-}
-
+exports.CGIdecode = CGIdecode;
