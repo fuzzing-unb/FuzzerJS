@@ -28,6 +28,8 @@ const CoverageJS = function () {
     _coverageLines = []
     _totalLines = 0
 
+    _status = false;
+
     function run(pathFile, inputValue = "") {
 
         // Create temporal directory
@@ -49,8 +51,9 @@ const CoverageJS = function () {
         _deleteTemporalFiles()
 
         return Object.freeze({
-            coverageLines: _coverageLines,
-            totalLines: _totalLines
+            coverage: _coverageLines,
+            totalLines: _totalLines,
+            status: _status
         });
     }
 
@@ -76,7 +79,7 @@ const CoverageJS = function () {
         commandNYC += `--report-dir=${path.join(_dirTemp, _dirReport)} `
         commandNYC += `node ${_script} "${inputValue}"`
 
-        _runCMD(commandNYC)
+        _status = _runCMD(commandNYC)
         // const reportText = _runCMD(commandNYC)
         //reportText ? console.log(reportText) : null
 
@@ -119,7 +122,8 @@ const CoverageJS = function () {
             content = fs.readFileSync(path.join(_dirTemp, _dirReport, _lcovFile), { encoding: 'utf8' });
         } catch (err) {
             // An error occurred
-            throw err;
+            //throw err;
+            return;
         }
 
         _totalLines = 0
@@ -159,13 +163,15 @@ const CoverageJS = function () {
                 // stdio: 'inherit'
             })
 
-            // return execSyncResult
+            return true;
 
         } catch (error) {
             // error.status;  // 0 : successful exit, but here in exception it has to be greater than 0
             // error.message; // Holds the message you typically want.
             // error.stderr;  // Holds the stderr output. Use `.toString()`.
             // error.stdout;  // Holds the stdout output. Use `.toString()`.
+            // console.log('error here')
+            return false;
         }
     }
 
