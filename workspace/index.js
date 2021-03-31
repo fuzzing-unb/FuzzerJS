@@ -1,8 +1,8 @@
 // // Run samples of basic Fuzzer
-require('./samples/fuzzer/sample-fuzzer');
+// require('./samples/fuzzer/sample-fuzzer');
 
 // Run samples how to Coverage a JS file
-// require('./samples/coverage/sample-coverage');
+require('./samples/coverage/sample-coverage');
 
 
 

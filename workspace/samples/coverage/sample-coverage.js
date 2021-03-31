@@ -1,11 +1,11 @@
-const CoverageJS = require('../../coverageJS/coverageJS');
-const RandomFuzzer = require('../../core/randomFuzzer');
-const { populationCoverage } = require('../../coverageJS/populationCoverage');
+const CoverageJS = require('../../src/coverageJS/coverageJS');
+const RandomFuzzer = require('../../src/core/randomFuzzer');
+const { populationCoverage } = require('../../src/coverageJS/populationCoverage');
 
 
 let _trials = 100;
 let _randomFuzzer = new RandomFuzzer();
-let _scriptPath = "/usr/src/app/programs/CGIdecode.js";
+let _scriptPath = "/usr/src/workspace/samples/programs/CGIdecode.js";
 
 // let coverage, status
 // coverage = CoverageJS.run(_scriptPath,"Hello+world")
