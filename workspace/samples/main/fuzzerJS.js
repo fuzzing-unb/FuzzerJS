@@ -89,6 +89,6 @@ if (fuzzer == "black") {
     }
 }
 
-
+// node samples/main/fuzzerJS.js -P=/usr/src/workspace/samples/programs/CGIdecode.js -C
 
 
