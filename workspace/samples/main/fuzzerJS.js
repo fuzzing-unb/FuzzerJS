@@ -1,31 +1,94 @@
-const CoverageJS = require('../../coverageJS/coverageJS');
-const RandomFuzzer = require('../../core/randomFuzzer');
+const CoverageJS = require('../../src/coverageJS/coverageJS');
+const RandomFuzzer = require('../../src/core/randomFuzzer');
+const NodeScriptRunner = require('../../src/core/nodeScriptRunner');
 
-inputs = [] 
+const TimeTaker = require('../../src/utils/timeTaker');
+const ResultAnaliser = require('../../src/utils/resultAnaliser');
+
+
+const BlackboxGenerationBased = require('../../src/fuzzers/blackboxGenerationBased');
+
+inputs = []
 
 scriptPath = ""
 testscriptPath = ""
 
 // console.log(process.argv)
-// Validate inputs
+// // Validate inputs
 inputs = process.argv.slice(2)
-if(inputs.length == 0){
+if (inputs.length == 0) {
     throw "Write at least one parameter"
 }
 
-scriptPath = inputs[0]
-// testscriptPath = inputs[1]
+scriptPath = ""
+times = 50
+fuzzer = 0
+coverage = 0
+// scriptPath = "/usr/src/workspace/samples/programs/CGIdecode.js";
+outputPath = "/usr/src/workspace/output.txt";
+// scriptPath = inputs[0]
 
-// CoverageJS.run('./programs/CGIdecode.js','./samples/coverage/test-cgidecode.js')
+// if (typeof inputs[1] !== 'undefined') {
+//     times = inputs[1] 
+// }
 
-randomFuzzer = new RandomFuzzer()
-inp = randomFuzzer.fuzz()
-inp = inp.replace(/"/g, "");
-console.log(inp)
-console.log(CoverageJS.run(scriptPath, inp))
+for (let index = 0; index < inputs.length; index++) {
+    const input = inputs[index];
+    // console.log(input)
+    // switch (input) {
+    //     case input.startsWith("-F="):
+    //         scriptPath = input.substring(3, inputs[index].lenght)
+    //         break;
+    //     case input.startsWith("-T="):
+    //         times = input.substring(3, inputs[index].lenght)
+    //         break;
 
-// console.log(CoverageJS.run(scriptPath, "abc"))
-// console.log(CoverageJS.run(scriptPath, "5<+ 49;2:1#?>/$:*(,/88$42/$'$3+%6/3=*4)-;!'+'%.5'(8.#<34$;=();5%91!2;(6:*'6(:8*-/..)8&"))
-// 5<+ 49;2:1#?>/$:*(,/88$42/$'$3+%6/"3=*4)-;!'+'%.5'(8.#<34$";=();5"%91!2;(6:*'6(:8*-/..)8&
+    //     default:
+    //         break;
+    // }
+
+
+    if (input.startsWith("-P=")) {
+        scriptPath = input.substring(3, inputs[index].lenght)
+    }
+
+    if (input.startsWith("-T=")) {
+        times = inputs[index].substring(3, inputs[index].lenght)
+    }
+
+    if (input.startsWith("-F=")) {
+        fuzzer = inputs[index].substring(3, inputs[index].lenght)
+    }
+
+    if (input.startsWith("-C")) {
+        coverage = 1
+    }
+
+}
+
+
+
+
+// // blackbox generation-based fuzzer
+
+if (fuzzer == "black") {
+    BlackboxGenerationBased.run(scriptPath, times, outputPath)
+    console.log(`Output created at > ${outputPath}`)
+} else {
+    if (coverage) {
+
+        // Test Coverage
+        randomFuzzer = new RandomFuzzer()
+        inp = randomFuzzer.fuzz()
+        inp = inp.replace(/"/g, "");
+        console.log(inp)
+        console.log(CoverageJS.run(scriptPath, inp))
+    }
+    else {
+        console.log("incorrect parameters")
+    }
+}
+
+
 
 

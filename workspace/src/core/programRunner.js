@@ -4,22 +4,22 @@ const Runner = require('./runner');
 
 class ProgramRunner extends Runner {
 
-    #program;
+    _program;
 
     constructor(program) {
         super();
-        this.#program = program;
+        this._program = program;
     }
 
     runProcess(inp) {
 
-        const command = spawnSync(this.#program, { input: inp }); // run console program
+        const command = spawnSync(this._program, { input: inp }); // run console program
 
         return Object.freeze({
             status: command.status,
             stdin: inp,
-            stdout: command.stdout.toString(),
-            stderr: command.stderr.toString()
+            stdout: command.stdout ? command.stdout.toString() : '',
+            stderr: command.stderr ? command.stderr.toString() : '',
         });
 
         // command = {
@@ -47,10 +47,6 @@ class ProgramRunner extends Runner {
 
         return Object.freeze([result, outcome]); 
     }
-
-
-
-
 
 }
 
