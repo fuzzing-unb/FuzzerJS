@@ -2,13 +2,14 @@
 const Mutator = require('./mutator');
 const Fuzzer = require('./fuzzer');
 
-class MutatorFuzzer extends Fuzzer{
+class MutationFuzzer extends Fuzzer{
 
     _seed = []
     _population = []
     _seedIndex = 0
     _minMutations = 0
     _maxMutations = 0
+    _output = ""
 
     constructor(seed, minMutations = 2, maxMutations = 10) {
         super();
@@ -30,7 +31,6 @@ class MutatorFuzzer extends Fuzzer{
     _createCandidate(){
         let candidate = this._population[Math.floor(Math.random() * this._population.length)]
         let trials =  Math.floor(Math.random() * (this._maxMutations - this._minMutations) ) + this._minMutations;
-        
         for (let index = 0; index < trials; index++) {
             candidate = this._mutate(candidate)
         }
@@ -38,20 +38,22 @@ class MutatorFuzzer extends Fuzzer{
     }
 
     fuzz(){
-
-        let output = ""
-        
+       
         if (this._seedIndex < this._seed.length) {
             // Still seeding
-            output = this._seed[this._seedIndex]
+            this._output = this._seed[this._seedIndex]
             this._seedIndex += 1
         } else {
             // Mutating
-            output = this._createCandidate()
+            this._output = this._createCandidate()
         }
 
-        return output
+        return this._output
+    }
+
+    getPopulation(){
+        return this._population
     }
 }
 
-module.exports = MutatorFuzzer
+module.exports = MutationFuzzer

@@ -1,4 +1,4 @@
-const { execSync, spawnSync } = require('child_process');
+const { spawnSync } = require('child_process');
 
 const Runner = require('./runner');
 
@@ -12,7 +12,7 @@ class NodeScriptRunner extends Runner {
         this._scriptPath = scriptPath;
     }
 
-    runProcess(inp) {
+    runScript(inp) {
 
         const command = spawnSync(this._node, [this._scriptPath, inp]); // run console program
 
@@ -36,7 +36,7 @@ class NodeScriptRunner extends Runner {
     run(inp = "") {
 
         var outcome = Runner.UNRESOLVED;
-        var result = this.runProcess(inp);
+        var result = this.runScript(inp);
 
         if (result.status == 0) {
             outcome = Runner.PASS;

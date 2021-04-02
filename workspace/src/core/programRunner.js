@@ -11,7 +11,7 @@ class ProgramRunner extends Runner {
         this._program = program;
     }
 
-    runProcess(inp) {
+    runScript(inp) {
 
         const command = spawnSync(this._program, { input: inp }); // run console program
 
@@ -35,7 +35,7 @@ class ProgramRunner extends Runner {
     run(inp = "") {
 
         var outcome = Runner.UNRESOLVED;
-        var result = this.runProcess(inp);
+        var result = this.runScript(inp);
         
         if (result.status == 0) {
             outcome = Runner.PASS;
