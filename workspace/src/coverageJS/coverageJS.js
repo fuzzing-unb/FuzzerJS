@@ -16,6 +16,7 @@ const CoverageJS = function () {
     _dirScript = ""
     _scriptName = ""
     _script = ""
+    _inputValue = ""
 
     _dirScriptInstrumented = ""
     _scriptInstrumentedName = ""
@@ -28,10 +29,11 @@ const CoverageJS = function () {
     _coverageLines = []
     _totalLines = 0
 
-    _status = false;
+    _result = {};
 
     function run(pathFile, inputValue = "") {
 
+        _inputValue = inputValue
         // Create temporal directory
         createDirectory(_dirTemp)
 
@@ -42,7 +44,7 @@ const CoverageJS = function () {
         _instrumentFile(pathFile)
 
         // 2. Run nyc
-        _runNYC(inputValue)
+        _runNYC()
 
         // 3. Get coverage information
         _readInfoCoverageFile()
@@ -52,8 +54,8 @@ const CoverageJS = function () {
 
         return Object.freeze({
             coverage: _coverageLines,
-            totalLines: _totalLines,
-            status: _status
+            // totalLines: _totalLines,
+            result: _result
         });
     }
 
@@ -71,15 +73,15 @@ const CoverageJS = function () {
 
     }
 
-    function _runNYC(inputValue) {
+    function _runNYC() {
 
         commandNYC = "nyc "
         // commandNYC += "--reporter=text "
         commandNYC += "--reporter=lcov "
         commandNYC += `--report-dir=${path.join(_dirTemp, _dirReport)} `
-        commandNYC += `node ${_script} "${inputValue}"`
+        commandNYC += `node ${_script} "${_inputValue}"`
 
-        _status = _runCMD(commandNYC)
+        _result = _runCMD(commandNYC)
         // const reportText = _runCMD(commandNYC)
         //reportText ? console.log(reportText) : null
 
@@ -117,6 +119,8 @@ const CoverageJS = function () {
     function _readInfoCoverageFile() {
 
         flagSF = 0
+        _totalLines = 0
+        _coverageLines = []
 
         try {
             content = fs.readFileSync(path.join(_dirTemp, _dirReport, _lcovFile), { encoding: 'utf8' });
@@ -126,7 +130,6 @@ const CoverageJS = function () {
             return;
         }
 
-        _totalLines = 0
         lines = content.split('\n')
 
         for (let index = 0; index < lines.length; index++) {
@@ -157,22 +160,42 @@ const CoverageJS = function () {
     function _runCMD(cmd) {
         try {
 
-            const execSyncResult = execSync(cmd, {
-                // cwd: './',
-                encoding: 'utf8',
-                // stdio: 'inherit'
-            })
+            const execSyncResult = execSync(cmd, { encoding: 'utf8' })
 
-            return true;
+            return Object.freeze({
+                status: 0,
+                stdin: _inputValue,
+                stdout: execSyncResult,
+                stderr: "",
+            });
 
         } catch (error) {
-            // error.status;  // 0 : successful exit, but here in exception it has to be greater than 0
-            // error.message; // Holds the message you typically want.
-            // error.stderr;  // Holds the stderr output. Use `.toString()`.
-            // error.stdout;  // Holds the stdout output. Use `.toString()`.
-            // console.log('error here')
-            return false;
+            return Object.freeze({
+                status: -1,
+                stdin: _inputValue,
+                stdout: error.stdout.toString(),
+                stderr: error.stderr.toString(),
+            });
         }
+
+        // try {
+
+        //     const execSyncResult = execSync(cmd, {
+        //         // cwd: './',
+        //         encoding: 'utf8',
+        //         // stdio: 'inherit'
+        //     })
+
+        //     return true;
+
+        // } catch (error) {
+        //     // error.status;  // 0 : successful exit, but here in exception it has to be greater than 0
+        //     // error.message; // Holds the message you typically want.
+        //     // error.stderr;  // Holds the stderr output. Use `.toString()`.
+        //     // error.stdout;  // Holds the stdout output. Use `.toString()`.
+        //     // console.log('error here')
+        //     return false;
+        // }
     }
 
     function _deleteTemporalFiles() {

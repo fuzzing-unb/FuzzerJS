@@ -15,6 +15,10 @@ let _scriptPath = "/usr/src/workspace/samples/programs/CGIdecode.js";
 // console.log(CoverageJS.run('./programs/CGIdecode.js', "%?a"))
 
 
+let scriptPathHttpProgram = "/usr/src/workspace/samples/programs/httpProgram.js"
+console.log(CoverageJS.run(scriptPathHttpProgram,"http://www.google.com/search?q=fuzzing"))
+
+
 // function population_coverage(population, scriptPath) {
 
 //     let allCoverage = [];
@@ -41,7 +45,7 @@ function hundred_inputs() {
     return population;
 }
 
-console.log(populationCoverage(hundred_inputs(), _scriptPath))
+// console.log(populationCoverage(hundred_inputs(), _scriptPath))
 // console.log(population_coverage(["abc", "a%c"], _scriptPath))
 
 
