@@ -8,14 +8,14 @@ class Mutator {
 
         switch (Math.floor(Math.random() * 3)) {
             case 0:
-                return this._insertRandomCharacter(input)
+                input = this._insertRandomCharacter(input)
             case 1:
-                return this._deleteRandomCharacter(input)
+                input = this._deleteRandomCharacter(input)
             case 2:
-                return this._flipRandomCharacter(input)
-            default:
-                return input;
+                input = this._flipRandomCharacter(input)
         }
+
+        return input = input.replace(/"/g, '');
     }
 
     _insertRandomCharacter(input) {
@@ -30,7 +30,7 @@ class Mutator {
     _deleteRandomCharacter(input) {
 
         if (input == "") {
-            return _insertRandomCharacter(input)
+            return this._insertRandomCharacter(input)
         }
 
         let position = Math.floor(Math.random() * input.length - 1)
@@ -41,7 +41,7 @@ class Mutator {
     _flipRandomCharacter(input) {
 
         if (input == "") {
-            return _insertRandomCharacter(input)
+            return this._insertRandomCharacter(input)
         }
 
         let position = Math.floor(Math.random() * input.length)

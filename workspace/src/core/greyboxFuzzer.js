@@ -34,6 +34,10 @@ class GreyBoxFuzzer extends MutationFuzzerPlus {
 
         return Object.freeze([result, outcome]);
     }
+
+    getCoveragesSeen(){
+        return this._coveragesSeen
+    }
 }
 
 module.exports = GreyBoxFuzzer

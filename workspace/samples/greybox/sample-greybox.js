@@ -47,7 +47,8 @@ const { populationCoverage } = require('../../src/coverageJS/populationCoverage'
 
 // // BLACKBOX MUTATION-BASED FUZZER
 // n = 100
-// seed = ["good"]
+// // seed = ["good"]
+// seed = ["beast"]
 // scriptPathCrashme = "/usr/src/workspace/samples/programs/crashme.js"
 
 // blackbox_fuzzer = new MutationFuzzerPlus(seed, new Mutator(), new PowerSchedule())
@@ -64,12 +65,14 @@ const { populationCoverage } = require('../../src/coverageJS/populationCoverage'
 // maxCoverage = Math.max(...populationCoverageResult[1])
 // TimeTaker.setEnd()
 // console.log(`It took the blackbox mutation-based fuzzer ${TimeTaker.getDifference()} seconds to achieved a maximum coverage of ${maxCoverage} statements.`)
-
+// console.log(populationCoverageResult[0])
+// console.log(blackbox_fuzzer.getInputs())
 
 
 // // GREYBOX MUTATION-BASED FUZZER
-n = 1000
-seed = ["good"]
+n = 100
+// seed = ["good"]
+seed = ["bsb"]
 scriptPathCrashme = "/usr/src/workspace/samples/programs/crashme.js"
 
 greybox_fuzzer = new GreyboxFuzzer(seed, new Mutator(), new PowerSchedule())
@@ -78,7 +81,11 @@ TimeTaker.setStart()
 r = greybox_fuzzer.runs(new NodeScriptCoverageRunner(scriptPathCrashme), trials=n)
 TimeTaker.setEnd()
 
-console.log(`It took the blackbox mutation-based fuzzer ${TimeTaker.getDifference()} seconds to generate and execute ${n} inputs.`)
+console.log(`It took the greybox mutation-based fuzzer ${TimeTaker.getDifference()} seconds to generate and execute ${n} inputs.`)
+
+console.log(greybox_fuzzer.getInputs()) 
+console.log(greybox_fuzzer.getPopulation())
+console.log(greybox_fuzzer.getCoveragesSeen()) 
 
 // TimeTaker.setStart()
 // populationCoverageResult = populationCoverage(greybox_fuzzer.getInputs(), scriptPathCrashme)
@@ -86,4 +93,3 @@ console.log(`It took the blackbox mutation-based fuzzer ${TimeTaker.getDifferenc
 // maxCoverage = Math.max(...populationCoverageResult[1])
 // TimeTaker.setEnd()
 // console.log(`It took the blackbox mutation-based fuzzer ${TimeTaker.getDifference()} seconds to achieved a maximum coverage of ${maxCoverage} statements.`)
-console.log(greybox_fuzzer.getPopulation())
