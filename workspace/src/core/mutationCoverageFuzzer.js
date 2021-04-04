@@ -21,6 +21,7 @@ class MutationCoverageFuzzer extends MutationFuzzer {
         let resultRunner = super.run(runner)
         let result = resultRunner.result
         let outcome = resultRunner.outcome
+        
         let newCoverage = runner.getCoverage().toString()
         if (outcome == Runner.PASS && !this._coveragesSeen.includes(newCoverage)) {
             // if (outcome == Runner.PASS) {
