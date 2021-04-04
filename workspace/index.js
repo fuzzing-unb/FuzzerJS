@@ -5,7 +5,10 @@
 // require('./samples/coverage/sample-coverage');
 
 // // Run samples of mutation Fuzzer
-require('./samples/mutation/sample-mutation');
+// require('./samples/mutation/sample-mutation');
+
+// // Run samples of greybox
+require('./samples/greybox/sample-greybox');
 
 
 

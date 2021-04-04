@@ -13,6 +13,7 @@ class NodeScriptCoverageRunner extends NodeScriptRunner {
 
         this._coverage = this._resultCoverage.coverage
 
+        // return this._resultCoverage.result
         return this._resultCoverage.result
     }
 
