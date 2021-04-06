@@ -3,7 +3,7 @@ const fs = require('fs');
 // fuzzers
 const BlackboxGenerationBased = require('../../src/fuzzers/blackboxGenerationBased');
 const BlackboxMutationBased = require('../../src/fuzzers/blackboxMutationBased');
-
+const GreyboxMutationBased = require('../../src/fuzzers/greyboxMutationBased');
 
 inputs = []
 
@@ -19,7 +19,7 @@ if (inputs.length == 0) {
 
 scriptPath = ""
 outputPath = ""
-times = 50
+trials = 50
 fuzzer = ""
 seeds = []
 coverage = false
@@ -32,7 +32,7 @@ reportTypes = ['0', '1', '2']
 // scriptPath = inputs[0]
 
 // if (typeof inputs[1] !== 'undefined') {
-//     times = inputs[1] 
+//     trials = inputs[1] 
 // }
 
 for (let index = 0; index < inputs.length; index++) {
@@ -47,8 +47,8 @@ for (let index = 0; index < inputs.length; index++) {
     }
 
     if (input.startsWith("-T=")) {
-        times = inputs[index].substring(3, inputs[index].length)
-        if (!Number.isInteger(Number(times))) {
+        trials = inputs[index].substring(3, inputs[index].length)
+        if (!Number.isInteger(Number(trials))) {
             throw "value for -T must be integer number"
         }
     }
@@ -93,24 +93,24 @@ if (scriptPath == "") {
 
 if (fuzzer == "black") {
     if (seeds.length > 0) {
-        BlackboxMutationBased.run(scriptPath, times, outputPath, report, seeds, coverage)
+        BlackboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, coverage)
     } else {
-        BlackboxGenerationBased.run(scriptPath, times, outputPath, report)
+        BlackboxGenerationBased.run(scriptPath, trials, outputPath, report)
     }
 
 } else {
-    // if (coverage) {
+    if (fuzzer == "grey") {
 
-    //     // Test Coverage
-    //     randomFuzzer = new RandomFuzzer()
-    //     inp = randomFuzzer.fuzz()
-    //     inp = inp.replace(/"/g, "");
-    //     console.log(inp)
-    //     console.log(CoverageJS.run(scriptPath, inp))
-    // }
-    // else {
-    console.log("incorrect parameters")
-    // }
+        if (seeds.length <= 0) {
+            throw "value for -S is mandatory"
+        }
+
+        GreyboxMutationBased.run(scriptPath, trials, outputPath, report, seeds)
+
+    }
+    else {
+        console.log("incorrect parameters")
+    }
 }
 
 // node samples/main/fuzzerJS.js -P=/usr/src/workspace/samples/programs/CGIdecode.js -C
@@ -127,7 +127,7 @@ if (fuzzer == "black") {
  * -F=black -P=/usr/src/workspace/samples/programs/CGIdecode.js -T=200 -S=hello,bye
  *
  * -F=black -P=/usr/src/workspace/samples/programs/CGIdecode.js -T=100 -S=hello,bye -O=/usr/src/workspace/
- * 
+ *
  * -F=black -P=/usr/src/workspace/samples/programs/CGIdecode.js -T=20 -R=2
  *
  *
@@ -142,7 +142,7 @@ if (fuzzer == "black") {
  *
  * -P = [string][MANDATORY] -- script's path
  *
- * -T = [number] -- times of iterations
+ * -T = [number] -- trials of iterations
  *
  * -O = [string][MANDATORY] -- output's folder
  *

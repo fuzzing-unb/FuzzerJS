@@ -10,7 +10,7 @@ const WriteOutput = function () {
         let body = ""
         body += `Elapsed time: ${TimeTaker.getDifference()} ${_n}`
         body += `seeds: ${ResultAnaliser.getSeeds().toString()} ${_n}`
-        body += `# executions: ${ResultAnaliser.getTimes()} ${_n}`
+        body += `# trials: ${ResultAnaliser.getTrials()} ${_n}`
 
         switch (ResultAnaliser.getReportType()) {
             case '0':
@@ -62,7 +62,7 @@ const WriteOutput = function () {
         bodyInformation += _n
         for (let index = 0; index < informations.length; index++) {
 
-            bodyInformation += `Execution #: ${informations[index].index} ${_n}`
+            bodyInformation += `Execution #: ${index + 1} ${_n}`
             if (informations[index].coverage !== undefined) {
                 bodyInformation += `coverage: ${informations[index].coverage.toString()} ${_n}`
             }

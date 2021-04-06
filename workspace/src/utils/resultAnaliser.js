@@ -1,4 +1,5 @@
 const Runner = require('../core/runner');
+// const Return = require('../models/return');
 
 const resultAnaliser = function () {
 
@@ -7,7 +8,7 @@ const resultAnaliser = function () {
     _resultFAIL = []
     _resultUNRESOLVED = []
 
-    _times = 0;
+    _trials = 0;
     _seeds = []
     _reportType = 0
 
@@ -27,6 +28,17 @@ const resultAnaliser = function () {
         _reportType = reportType
     }
 
+    function setPass(resultPASS) {
+        this._resultPASS.push(resultPASS)
+    }
+
+    function setFail(resultFail) {
+        this._resultFAIL.push(resultFail)
+    }
+
+    function setTrials(trials) {
+        _trials = trials
+    }
 
     /**
      * getters
@@ -40,15 +52,15 @@ const resultAnaliser = function () {
         return [].concat(_resultFAIL, _resultUNRESOLVED);
     }
 
-    function getTimes() {
-        return _times
+    function getTrials() {
+        return _trials
     }
 
-    function getSeeds(){
+    function getSeeds() {
         return _seeds
     }
 
-    function getReportType(){
+    function getReportType() {
         return _reportType
     }
 
@@ -58,10 +70,8 @@ const resultAnaliser = function () {
      */
     function _analisis() {
 
-        _reset()
-
-        _times = this._result.length
-        for (let index = 0; index < _times; index++) {
+        reset()
+        for (let index = 0; index < this._result.length; index++) {
 
             let result = this._result[index].result
             result["index"] = index + 1
@@ -82,23 +92,27 @@ const resultAnaliser = function () {
         }
     }
 
-    function _reset() {
+    function reset() {
         _resultPASS = []
         _resultFAIL = []
         _resultUNRESOLVED = []
 
-        _times = 0
     }
 
     return {
+        //setters
         setResult,
         setSeeds,
         setReportType,
+        setPass,
+        setFail,
+        setTrials,
+        //getters
         getSeeds,
         getReportType,
         getPasses,
         getFails,
-        getTimes
+        getTrials
     }
 
 }();

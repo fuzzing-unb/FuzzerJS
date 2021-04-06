@@ -11,16 +11,16 @@ const ResultAnaliser = require('../utils/resultAnaliser');
 
 const BlackboxMutationBased = function () {
 
-    function run(scriptPath, times, outputPath, reportType = 0, seeds = [], coverage = false){
+    function run(scriptPath, trials, outputPath, reportType = 0, seeds = [], coverage = false){
 
         let mutationFuzzer = new MutationFuzzer(seed = seeds)
 
         TimeTaker.setStart()
         if (coverage) {
-            result = mutationFuzzer.runs(new NodeScriptCoverageRunner(scriptPath), trials = times)
+            result = mutationFuzzer.runs(new NodeScriptCoverageRunner(scriptPath), trials = trials)
             
         } else {
-            result = mutationFuzzer.runs(new NodeScriptRunner(scriptPath), trials = times)
+            result = mutationFuzzer.runs(new NodeScriptRunner(scriptPath), trials = trials)
             
         }
         TimeTaker.setEnd()

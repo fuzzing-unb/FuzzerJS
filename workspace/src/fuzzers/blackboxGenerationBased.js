@@ -9,12 +9,12 @@ const ResultAnaliser = require('../utils/resultAnaliser');
 
 const BlackboxGenerationBased = function () {
 
-    function run(scriptPath, times, outputPath, reportType = 0) {
+    function run(scriptPath, trials, outputPath, reportType = 0) {
 
         let fuzzer = new RandomFuzzer(min_length = 4, max_length = 4, char_start = 32, char_range = 96)
 
         TimeTaker.setStart()
-        result = fuzzer.runs(new NodeScriptRunner(scriptPath), trials = times)
+        result = fuzzer.runs(new NodeScriptRunner(scriptPath), trials = trials)
         TimeTaker.setEnd()
 
         ResultAnaliser.setReportType(reportType)
