@@ -19,7 +19,7 @@ const populationCoverage = (population, scriptPath) => {
         return a - b;
     });
 
-    return Object.freeze([allCoverage, cumulativeCoverage]);
+    return Object([allCoverage, cumulativeCoverage]);
 
 };
 

@@ -15,7 +15,7 @@ class ProgramRunner extends Runner {
 
         const command = spawnSync(this._program, { input: inp }); // run console program
 
-        return Object.freeze({
+        return Object({
             status: command.status,
             stdin: inp,
             stdout: command.stdout ? command.stdout.toString() : '',
@@ -45,7 +45,7 @@ class ProgramRunner extends Runner {
             outcome = Runner.UNRESOLVED;
         }
 
-        return Object.freeze([result, outcome]); 
+        return Object([result, outcome]); 
     }
 
 }

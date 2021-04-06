@@ -16,7 +16,7 @@ class NodeScriptRunner extends Runner {
 
         const command = spawnSync(this._node, [this._scriptPath, inp]); // run console program
 
-        return Object.freeze({
+        return Object({
             status: command.status,
             stdin: inp,
             stdout: command.stdout ? command.stdout.toString() : '',
@@ -46,7 +46,7 @@ class NodeScriptRunner extends Runner {
             outcome = Runner.UNRESOLVED;
         }
 
-        return Object.freeze({result, outcome});
+        return Object({result, outcome});
     }
 
 }
@@ -58,7 +58,7 @@ module.exports = NodeScriptRunner;
 
         //     const execSyncResult = execSync(cmd, { encoding: 'utf8' })
 
-        //     return Object.freeze({
+        //     return Object({
         //         status: 0,
         //         stdin: inp,
         //         stdout: execSyncResult,
@@ -66,7 +66,7 @@ module.exports = NodeScriptRunner;
         //     });
 
         // } catch (error) {
-        //     return Object.freeze({
+        //     return Object({
         //         status: -1,
         //         stdin: inp,
         //         stdout: error.stdout.toString(),

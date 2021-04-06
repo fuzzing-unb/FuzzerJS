@@ -32,7 +32,7 @@ class GreyBoxFuzzer extends MutationFuzzerPlus {
             this._coveragesSeen.push(newCoverage)
         }
 
-        return Object.freeze([result, outcome]);
+        return Object([result, outcome]);
     }
 
     getCoveragesSeen(){

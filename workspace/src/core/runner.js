@@ -9,7 +9,7 @@ class Runner {
     }
 
     run(inp){
-        return Object.freeze([inp, Runner.UNRESOLVED]);
+        return Object([inp, Runner.UNRESOLVED]);
     }
 }
 
