@@ -4,7 +4,7 @@ class PrintRunner extends Runner{
 
     run(inp){
         console.log(inp);
-        return Object.freeze([inp, Runner.UNRESOLVED]);
+        return Object([inp, Runner.UNRESOLVED]);
     }
 }
 

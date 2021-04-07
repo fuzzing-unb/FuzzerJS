@@ -70,22 +70,27 @@ const { populationCoverage } = require('../../src/coverageJS/populationCoverage'
 
 
 // // GREYBOX MUTATION-BASED FUZZER
-n = 100
+n = 5
 // seed = ["good"]
 seed = ["bsb"]
-scriptPathCrashme = "/usr/src/workspace/samples/programs/crashme.js"
+// scriptPath = "/usr/src/workspace/samples/programs/crashme.js"
+scriptPath = "/usr/src/workspace/samples/programs/CGIdecode.js"
 
 greybox_fuzzer = new GreyboxFuzzer(seed, new Mutator(), new PowerSchedule())
 
 TimeTaker.setStart()
-r = greybox_fuzzer.runs(new NodeScriptCoverageRunner(scriptPathCrashme), trials=n)
+r = greybox_fuzzer.runs(new NodeScriptCoverageRunner(scriptPath), trials=n)
 TimeTaker.setEnd()
 
 console.log(`It took the greybox mutation-based fuzzer ${TimeTaker.getDifference()} seconds to generate and execute ${n} inputs.`)
-
-console.log(greybox_fuzzer.getInputs()) 
-console.log(greybox_fuzzer.getPopulation())
-console.log(greybox_fuzzer.getCoveragesSeen()) 
+// console.log(r)
+// console.log(greybox_fuzzer.getInputs()) 
+console.clear()
+// console.log(greybox_fuzzer.getPopulation())
+// console.log(greybox_fuzzer.getCoveragesSeen()) 
+// console.log(greybox_fuzzer.getPopulationFail())
+// console.log(greybox_fuzzer.getCoveragesSeenFail()) 
+console.log(greybox_fuzzer.getResults())
 
 // TimeTaker.setStart()
 // populationCoverageResult = populationCoverage(greybox_fuzzer.getInputs(), scriptPathCrashme)

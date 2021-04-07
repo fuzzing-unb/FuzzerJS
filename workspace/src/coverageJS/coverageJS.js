@@ -52,7 +52,7 @@ const CoverageJS = function () {
         // 4. Delete temporal files
         _deleteTemporalFiles()
 
-        return Object.freeze({
+        return Object({
             coverage: _coverageLines,
             // totalLines: _totalLines,
             result: _result
@@ -93,7 +93,7 @@ const CoverageJS = function () {
         var filename = path.basename(pathFile, extension);
         var dirname = path.dirname(pathFile)
 
-        return Object.freeze([pathFile, dirname, filename]);
+        return Object([pathFile, dirname, filename]);
     }
 
     function _validatePath(pathFile) {
@@ -162,7 +162,7 @@ const CoverageJS = function () {
 
             const execSyncResult = execSync(cmd, { encoding: 'utf8' })
 
-            return Object.freeze({
+            return Object({
                 status: 0,
                 stdin: _inputValue,
                 stdout: execSyncResult,
@@ -170,7 +170,7 @@ const CoverageJS = function () {
             });
 
         } catch (error) {
-            return Object.freeze({
+            return Object({
                 status: -1,
                 stdin: _inputValue,
                 stdout: error.stdout.toString(),

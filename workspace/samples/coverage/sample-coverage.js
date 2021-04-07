@@ -33,7 +33,7 @@ console.log(CoverageJS.run(scriptPathHttpProgram,"http://www.google.com/search?q
 //         cumulativeCoverage.push(allCoverage.length)
 //     }
 
-//     return Object.freeze([allCoverage, cumulativeCoverage]);
+//     return Object([allCoverage, cumulativeCoverage]);
 
 // }
 
