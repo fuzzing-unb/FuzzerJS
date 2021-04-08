@@ -140,11 +140,11 @@ if (fuzzer == "black") {
  *
  * -F = [black,grey][MANDATORY] -- fuzzer type
  *
- * -P = [string][MANDATORY] -- script's path
+ * -P = [string][MANDATORY] -- script path
  *
  * -T = [number] -- trials of iterations
  *
- * -O = [string][MANDATORY] -- output's folder
+ * -O = [string] -- output folder
  *
  * -S = [string separate by comma] -- seeds
  *
