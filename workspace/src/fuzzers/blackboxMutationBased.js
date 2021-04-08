@@ -27,6 +27,7 @@ const BlackboxMutationBased = function () {
        
         ResultAnaliser.setSeeds(seeds)
         ResultAnaliser.setReportType(reportType)
+        ResultAnaliser.setTrials(trials)
         ResultAnaliser.setResult(result)
         
         WriteOutput.run(TimeTaker, ResultAnaliser, outputPath)
