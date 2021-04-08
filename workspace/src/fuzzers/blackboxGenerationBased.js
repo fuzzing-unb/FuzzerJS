@@ -18,6 +18,7 @@ const BlackboxGenerationBased = function () {
         TimeTaker.setEnd()
 
         ResultAnaliser.setReportType(reportType)
+        ResultAnaliser.setTrials(trials)
         ResultAnaliser.setResult(result)
 
         WriteOutput.run(TimeTaker, ResultAnaliser, outputPath)
