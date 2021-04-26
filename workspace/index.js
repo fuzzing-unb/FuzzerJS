@@ -8,7 +8,11 @@
 // require('./samples/mutation/sample-mutation');
 
 // // Run samples of greybox
-require('./samples/greybox/sample-greybox');
+// require('./samples/greybox/sample-greybox');
+
+// // Run samples of grammar
+require('./samples/grammar/sample-grammar');
+
 
 
 
