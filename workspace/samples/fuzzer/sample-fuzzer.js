@@ -43,9 +43,9 @@ programRunner = new ProgramRunner('cat');
 // results = randomFuzzer.runs(programRunner, 10);
 // console.log(results);
 
-programRunnerBC = new ProgramRunner('bc');
-results = fuzzerGrammar.runs(programRunnerBC, 10);
-console.log(results);
+// programRunnerBC = new ProgramRunner('bc');
+// results = fuzzerGrammar.runs(programRunnerBC, 10);
+// console.log(results);
 
 // for (let index = 0; index < 10; index++) {
 //     inp = simpleGrammarFuzzer(EXPR_GRAMMAR, START_SYMBOL, 3, 100, false);
@@ -53,3 +53,7 @@ console.log(results);
 //     // assert(result.stdout == inp);
 //     console.log(result)
 // }
+
+// // use new function fuzzes to fuzzer grammar
+results = fuzzerGrammar.fuzzes(10);
+console.log(results);
