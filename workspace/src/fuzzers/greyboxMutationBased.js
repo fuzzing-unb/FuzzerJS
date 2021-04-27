@@ -3,6 +3,7 @@ const GreyboxFuzzer = require('../core/greyboxFuzzer');
 const Mutator = require('../core/mutator');
 const PowerSchedule = require('../core/powerSchedule');
 const NodeScriptCoverageRunner = require('../core/nodeScriptCoverageRunner');
+const FuzzerGrammar = require('../core/fuzzerGrammar');
 
 // Utils
 const TimeTaker = require('../utils/timeTaker');
@@ -12,7 +13,12 @@ const ResultAnaliser = require('../utils/resultAnaliser');
 
 const GreyboxMutationBased = function () {
 
-    function run(scriptPath, trials, outputPath, reportType = 0, seeds = [], coverage = true) {
+    function run(scriptPath, trials, outputPath, reportType = 0, seeds = [], grammar) {
+
+        if (grammar != "") {
+            let fuzzerGrammar = new FuzzerGrammar(grammar)
+            seeds = fuzzerGrammar.fuzzes(Math.round((5 / 100) * trials));
+        }
 
         greybox_fuzzer = new GreyboxFuzzer(seeds, new Mutator(), new PowerSchedule())
 

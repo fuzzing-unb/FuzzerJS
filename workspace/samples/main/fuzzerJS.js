@@ -80,7 +80,7 @@ for (let index = 0; index < inputs.length; index++) {
         grammar = input.substring(3, inputs[index].length)
         if (grammar == "") {
             throw "value for -G is mandatory"
-        }        
+        }
     }
 
     if (input.startsWith("-M")) {
@@ -111,11 +111,16 @@ if (fuzzer == "black") {
 } else {
     if (fuzzer == "grey") {
 
-        if (seeds.length <= 0) {
-            throw "value for -S is mandatory"
+        if (seeds.length <= 0 && grammar == "") {
+            if (seeds.length <= 0) {
+                throw "value for -S is mandatory"
+            }
+            if (grammar == "") {
+                throw "value for -G is mandatory"
+            }
         }
 
-        GreyboxMutationBased.run(scriptPath, trials, outputPath, report, seeds)
+        GreyboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, grammar)
 
     }
     else {
