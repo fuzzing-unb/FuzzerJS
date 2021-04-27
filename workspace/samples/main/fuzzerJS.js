@@ -14,6 +14,7 @@ seeds = []
 coverage = false
 report = 0
 grammar = ""
+mutation = false
 
 fuzzerTypes = ["black", "grey"]
 reportTypes = ['0', '1', '2']
@@ -82,6 +83,10 @@ for (let index = 0; index < inputs.length; index++) {
         }        
     }
 
+    if (input.startsWith("-M")) {
+        mutation = true
+    }
+
 }
 
 
@@ -97,8 +102,8 @@ if (scriptPath == "") {
 // // blackbox generation-based fuzzer
 
 if (fuzzer == "black") {
-    if (seeds.length > 0) {
-        BlackboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, coverage)
+    if (mutation) {
+        BlackboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, grammar, coverage)
     } else {
         BlackboxGenerationBased.run(scriptPath, trials, outputPath, report, grammar)
     }

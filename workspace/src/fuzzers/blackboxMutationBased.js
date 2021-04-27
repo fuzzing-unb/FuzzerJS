@@ -3,6 +3,7 @@ const MutationCoverageFuzzer = require('../core/mutationCoverageFuzzer');
 const MutationFuzzer = require('../core/mutationFuzzer');
 const NodeScriptCoverageRunner = require('../core/nodeScriptCoverageRunner');
 const NodeScriptRunner = require('../core/nodeScriptRunner');
+const FuzzerGrammar = require('../core/fuzzerGrammar');
 
 // Utils
 const TimeTaker = require('../utils/timeTaker');
@@ -11,8 +12,14 @@ const ResultAnaliser = require('../utils/resultAnaliser');
 
 const BlackboxMutationBased = function () {
 
-    function run(scriptPath, trials, outputPath, reportType = 0, seeds = [], coverage = false){
+    function run(scriptPath, trials, outputPath, reportType = 0, seeds = [], grammar, coverage = false){
 
+        if (grammar != "") {
+            let fuzzerGrammar = new FuzzerGrammar(grammar)
+            seeds = []
+            seeds[0] = fuzzerGrammar.fuzz();
+        } 
+        
         let mutationFuzzer = new MutationFuzzer(seed = seeds)
 
         TimeTaker.setStart()
