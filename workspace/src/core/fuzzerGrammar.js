@@ -38,6 +38,16 @@ class FuzzerGrammar {
 
     }
 
+    fuzzes(trials) {
+
+        var outcomes = [];
+        for (let index = 0; index < trials; index++) {
+            outcomes.push(this.fuzz())            
+        }
+
+        return outcomes
+    }
+
     // run(runner: Runner){
     run(runner) {
         assert(runner instanceof Runner); //validate type
