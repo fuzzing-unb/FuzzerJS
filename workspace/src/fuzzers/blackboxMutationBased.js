@@ -12,31 +12,30 @@ const ResultAnaliser = require('../utils/resultAnaliser');
 
 const BlackboxMutationBased = function () {
 
-    function run(scriptPath, trials, outputPath, reportType = 0, seeds = [], grammar, coverage = false){
+    function run(scriptPath, trials, outputPath, reportType = 0, seeds = [], grammar, coverage = false) {
 
         if (grammar != "") {
             let fuzzerGrammar = new FuzzerGrammar(grammar)
-            seeds = []
-            seeds[0] = fuzzerGrammar.fuzz();
-        } 
-        
+            seeds = fuzzerGrammar.fuzzes(Math.round((5 / 100) * trials));
+        }
+
         let mutationFuzzer = new MutationFuzzer(seed = seeds)
 
         TimeTaker.setStart()
         if (coverage) {
             result = mutationFuzzer.runs(new NodeScriptCoverageRunner(scriptPath), trials = trials)
-            
+
         } else {
             result = mutationFuzzer.runs(new NodeScriptRunner(scriptPath), trials = trials)
-            
+
         }
         TimeTaker.setEnd()
-       
+
         ResultAnaliser.setSeeds(seeds)
         ResultAnaliser.setReportType(reportType)
         ResultAnaliser.setTrials(trials)
         ResultAnaliser.setResult(result)
-        
+
         WriteOutput.run(TimeTaker, ResultAnaliser, outputPath)
 
     }
