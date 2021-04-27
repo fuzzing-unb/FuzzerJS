@@ -6,17 +6,6 @@ const BlackboxMutationBased = require('../../src/fuzzers/blackboxMutationBased')
 const GreyboxMutationBased = require('../../src/fuzzers/greyboxMutationBased');
 
 inputs = []
-
-scriptPath = ""
-testscriptPath = ""
-
-// console.log(process.argv)
-// // Validate inputs
-inputs = process.argv.slice(2)
-if (inputs.length == 0) {
-    throw "Write at least one parameter"
-}
-
 scriptPath = ""
 outputPath = ""
 trials = 50
@@ -24,9 +13,19 @@ fuzzer = ""
 seeds = []
 coverage = false
 report = 0
+grammar = ""
 
 fuzzerTypes = ["black", "grey"]
 reportTypes = ['0', '1', '2']
+
+// console.log(process.argv)
+
+// // Validate inputs
+inputs = process.argv.slice(2)
+if (inputs.length == 0) {
+    throw "Write at least one parameter"
+}
+
 // scriptPath = "/usr/src/workspace/samples/programs/CGIdecode.js";
 // outputPath = "/usr/src/workspace/output.txt";
 // scriptPath = inputs[0]
@@ -76,6 +75,13 @@ for (let index = 0; index < inputs.length; index++) {
         }
     }
 
+    if (input.startsWith("-G=")) {
+        grammar = input.substring(3, inputs[index].length)
+        if (grammar == "") {
+            throw "value for -G is mandatory"
+        }        
+    }
+
 }
 
 
@@ -88,14 +94,13 @@ if (scriptPath == "") {
 }
 
 
-
 // // blackbox generation-based fuzzer
 
 if (fuzzer == "black") {
     if (seeds.length > 0) {
         BlackboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, coverage)
     } else {
-        BlackboxGenerationBased.run(scriptPath, trials, outputPath, report)
+        BlackboxGenerationBased.run(scriptPath, trials, outputPath, report, grammar)
     }
 
 } else {
