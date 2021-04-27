@@ -1,5 +1,5 @@
 // // Run samples of basic Fuzzer
-// require('./samples/fuzzer/sample-fuzzer');
+require('./samples/fuzzer/sample-fuzzer');
 
 // Run samples how to Coverage a JS file
 // require('./samples/coverage/sample-coverage');
@@ -11,7 +11,7 @@
 // require('./samples/greybox/sample-greybox');
 
 // // Run samples of grammar
-require('./samples/grammar/sample-grammar');
+// require('./samples/grammar/sample-grammar');
 
 
 
