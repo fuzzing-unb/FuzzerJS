@@ -99,8 +99,6 @@ if (scriptPath == "") {
 }
 
 
-// // blackbox generation-based fuzzer
-
 if (fuzzer == "black") {
     if (mutation) {
         BlackboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, grammar, coverage)
@@ -127,43 +125,3 @@ if (fuzzer == "black") {
         console.log("incorrect parameters")
     }
 }
-
-// node samples/main/fuzzerJS.js -P=/usr/src/workspace/samples/programs/CGIdecode.js -C
-
-/**
- * SAMPLES = node samples/main/fuzzerJS.js
- *
- * FOR BLACK BOX GENERATION-BASED
- *
- * -F=black -P=/usr/src/workspace/samples/programs/CGIdecode.js
- *
- * -F=black -P=/usr/src/workspace/samples/programs/CGIdecode.js -T=200
- *
- * -F=black -P=/usr/src/workspace/samples/programs/CGIdecode.js -T=200 -S=hello,bye
- *
- * -F=black -P=/usr/src/workspace/samples/programs/CGIdecode.js -T=100 -S=hello,bye -O=/usr/src/workspace/
- *
- * -F=black -P=/usr/src/workspace/samples/programs/CGIdecode.js -T=20 -R=2
- *
- *
- *
- *
- *
- */
-/**
- * COMMANDS
- *
- * -F = [black,grey][MANDATORY] -- fuzzer type
- *
- * -P = [string][MANDATORY] -- script path
- *
- * -T = [number] -- trials of iterations
- *
- * -O = [string] -- output folder
- *
- * -S = [string separate by comma] -- seeds
- *
- * -R = [0,1,2] -- 0: report only fails, 1: report only passes, 2: report all
- */
-
-
