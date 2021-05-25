@@ -45,7 +45,7 @@ class ProgramRunner extends Runner {
             outcome = Runner.UNRESOLVED;
         }
 
-        return Object([result, outcome]); 
+        return Object({result, outcome}); 
     }
 
 }
