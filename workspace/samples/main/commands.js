@@ -3,9 +3,9 @@
 /**
  * COMMANDS
  *
- * -F = [black,grey][MANDATORY] -- fuzzer type
+ * -F = [black,grey] -- fuzzer type
  *
- * -P = [string][MANDATORY] -- script path
+ * -P = [string] -- script path
  *
  * -T = [number] -- trials of iterations
  *
@@ -19,13 +19,22 @@
  * 
  * -R = [0,1,2] -- 0: report only fails, 1: report only passes, 2: report all
  * 
+ * -CL = -- run program in command line
+ * 
  */
 
 /** SAMPLES
  * 
  * node samples/main/fuzzerJS.js 
  * 
- * * * * FOR BLACK BOX 
+ * * * * FOR BLACK BOX IN COMMAND LINE
+ * 
+ * * GENERATION-BASED CL
+ * -CL=bc -T=200 -O=/usr/src/workspace/ -R=2
+ * 
+ * * GRAMMAR-BASED CL
+ * -CL=bc -G=EXPR_GRAMMAR -T=200 -O=/usr/src/workspace/ -R=2
+ * 
  * 
  * * simple
  * -F=black -P=./samples/programs/CGIdecode.js 

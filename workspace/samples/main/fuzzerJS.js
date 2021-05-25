@@ -4,6 +4,7 @@ const fs = require('fs');
 const BlackboxGenerationBased = require('../../src/fuzzers/blackboxGenerationBased');
 const BlackboxMutationBased = require('../../src/fuzzers/blackboxMutationBased');
 const GreyboxMutationBased = require('../../src/fuzzers/greyboxMutationBased');
+const BlackboxGenerationBasedCL = require('../../src/fuzzers/blackboxGenerationBasedCL');
 
 inputs = []
 scriptPath = ""
@@ -15,6 +16,7 @@ coverage = false
 report = 0
 grammar = ""
 mutation = false
+programCL = false
 
 fuzzerTypes = ["black", "grey"]
 reportTypes = ['0', '1', '2']
@@ -87,41 +89,54 @@ for (let index = 0; index < inputs.length; index++) {
         mutation = true
     }
 
-}
-
-
-// MANDATORY VALIDATIONS
-if (!fuzzerTypes.includes(fuzzer)) {
-    throw "value for -F must be [black] or [grey]"
-}
-if (scriptPath == "") {
-    throw "value for -P is mandatory"
-}
-
-
-if (fuzzer == "black") {
-    if (mutation) {
-        BlackboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, grammar, coverage)
-    } else {
-        BlackboxGenerationBased.run(scriptPath, trials, outputPath, report, grammar)
+    if (input.startsWith("-CL")) {
+        programCL = true
+        programCL = input.substring(4, inputs[index].length)
+        if (programCL == "") {
+            throw "value for -CL is mandatory"
+        }
     }
+
+}
+
+if (programCL != "") {
+
+    BlackboxGenerationBasedCL.run(programCL, trials, outputPath, report, grammar);
 
 } else {
-    if (fuzzer == "grey") {
 
-        if (seeds.length <= 0 && grammar == "") {
-            if (seeds.length <= 0) {
-                throw "value for -S is mandatory"
-            }
-            if (grammar == "") {
-                throw "value for -G is mandatory"
-            }
+    // MANDATORY VALIDATIONS
+    if (!fuzzerTypes.includes(fuzzer)) {
+        throw "value for -F must be [black] or [grey]"
+    }
+    if (scriptPath == "") {
+        throw "value for -P is mandatory"
+    }
+
+    if (fuzzer == "black") {
+        if (mutation) {
+            BlackboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, grammar, coverage)
+        } else {
+            BlackboxGenerationBased.run(scriptPath, trials, outputPath, report, grammar)
         }
 
-        GreyboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, grammar)
+    } else {
+        if (fuzzer == "grey") {
 
-    }
-    else {
-        console.log("incorrect parameters")
+            if (seeds.length <= 0 && grammar == "") {
+                if (seeds.length <= 0) {
+                    throw "value for -S is mandatory"
+                }
+                if (grammar == "") {
+                    throw "value for -G is mandatory"
+                }
+            }
+
+            GreyboxMutationBased.run(scriptPath, trials, outputPath, report, seeds, grammar)
+
+        }
+        else {
+            console.log("incorrect parameters")
+        }
     }
 }
